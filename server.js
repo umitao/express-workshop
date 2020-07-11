@@ -7,23 +7,14 @@ app.use(express.static("public"));
 app.use(formidable());
 
 fs.readFile(__dirname + "/data/posts.json", function (error, file) {
+  if (error) throw error;
   let parsedFile = JSON.parse(file);
-  console.log(parsedFile);
-  const postDate = Date.now();
-  fs.writeFileSync(
-    __dirname + "/data/posts.json",
-    `"${postDate}": "Testing"`,
-    { flag: "a+" },
-    function (error) {
-      console.log(error);
-    }
-  );
+  const postDate = Date.now().toString();
 });
 
 app.post("/create-post", function (req, res) {
-  console.log(req.fields);
-  console.log("/create-post");
-  res.send(req.fields);
+  let postBody = req.fields.blogpost;
+  res.send(postBody);
 });
 
 app.listen(3000, function () {
